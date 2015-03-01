@@ -16,7 +16,7 @@ var BASEHEIGHT_MM = 20;
 var CUTOUT_MM = 1;
 var NUM_CUTS = 10;
 var CUTSPACING_MM = WIDTH_MM  / (NUM_CUTS + 1);
-var FUNCTION_STRING = ""
+var FUNCTION_STRING = "x^2 + y^3";
 
 function setVariables(settings) {
     FUNCTION_STRING = settings["z_function"];
@@ -177,9 +177,6 @@ function genXSlice(X) {
         yval = yvalues[i];
         path.push( { "x": yval, "y": getValue(X, yval) } );
     }
-    // close out the path
-    // path.push({"x": WIDTH_MM, "y": 0});
-    // path.push({"x": 0, "y": 0});
     
     yvalues = yvalues.reverse(function(a, b){return a-b});
     
@@ -225,12 +222,4 @@ function pathsFromSlices(slices) {
     return slices.map(function(d){return d.path});
 }
 
-
-// var s = allTheXSlices();
-// console.log(s.map(function(d){return d.path})); //.map(function(d){console.log(d.path)});
-// console.log(s);
-
-// console.log(aSlice);
-
-// console.log(path);
 

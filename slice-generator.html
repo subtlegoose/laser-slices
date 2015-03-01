@@ -35,6 +35,7 @@
 			}
 			setVariables(settings);
 			
+			// Clear any existing svg paths 
 			var svgToClear1 = document.getElementById("svg1");
 			var svgToClear2 = document.getElementById("svg2");
 			
@@ -45,7 +46,6 @@
 				svgToClear2.removeChild(svgToClear2.firstChild);
 			}
 			
-			
 			var svgContainer1 = d3.select("#svg1");
 			var svgContainer2 = d3.select("#svg2");
 			
@@ -53,6 +53,7 @@
 			var paths1 = pathsFromSlices(allTheYSlices());
 			var paths2 = pathsFromSlices(allTheXSlices());
 			
+			// Add svg paths
 			for(var i = 0; i < paths1.length; i++) {
 				svgContainer1.append("path")
 						.attr("d",paths1[i])
@@ -69,6 +70,8 @@
 						.attr("fill","none");
 			}
 			
+			// Gen & add downloadable svgs 
+			// Example here: http://techslides.com/save-svg-as-an-image
 			var svg1html = d3.select("#svg1")
     							.node().parentNode.innerHTML;
     		var imgsrc1 = 'data:image/svg+xml;base64,'+ btoa(svg1html);
@@ -81,11 +84,10 @@
 		}
 		
 	</script>
-	<!-- evenutally will need to save the svg in an img tag:
-		 http://techslides.com/save-svg-as-an-image -->
 </head>
 
 <body onload="loadMeUp();">
+
 <h1>3D Function Slice Generator</h1>
 <div id="inputs">
 	<table>
@@ -112,8 +114,6 @@
 <div id="svg-container1"></div>
 <div id="svg-container2"></div>
 
-<!-- <path id="test" d="" stroke="blue" stroke-width="2" fill="none"></script> -->
-<!-- <path id="test" d="M1,5L20,20L40,10L60,40L80,5L100,60" stroke="blue" stroke-width="2" fill="none" /> -->
 </body>
 
 </html>
