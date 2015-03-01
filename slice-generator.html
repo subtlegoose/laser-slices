@@ -1,0 +1,120 @@
+<!--TODO
+	Use jquery .toggle() to show/hide the svg elements with raw paths
+	Use bootstrap to make pretty with their theme & columns
+-->
+
+<html>
+<head>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/1.3.0/math.min.js"></script>
+	<script type="text/javascript" src="slice-generator.js"></script>
+	<script type="text/javascript">
+		function loadMeUp() {
+			var svgContainer1 = d3.select("#svg-container1").append("svg")
+									.attr("id","svg1")
+									.attr("width","2000")
+									.attr("height","400")
+									.attr("version", 1.1)
+    								.attr("xmlns", "http://www.w3.org/2000/svg");
+			
+			var svgContainer2 = d3.select("#svg-container2").append("svg")
+									.attr("id","svg2")
+									.attr("width","2000")
+									.attr("height","400")
+									.attr("version", 1.1)
+    								.attr("xmlns", "http://www.w3.org/2000/svg");
+		}
+		
+		function genSVGs() {
+			// Get user inputs and set them in the slice-generator
+			var settings = {
+				"z_function": document.getElementById("z_function").value,
+				"width": document.getElementById("width").value,
+				"num_slices": document.getElementById("num_slices").value,
+				"thickness": document.getElementById("thickness").value
+			}
+			setVariables(settings);
+			
+			var svgToClear1 = document.getElementById("svg1");
+			var svgToClear2 = document.getElementById("svg2");
+			
+			while (svgToClear1.firstChild) {
+				svgToClear1.removeChild(svgToClear1.firstChild);
+			}
+			while (svgToClear2.firstChild) {
+				svgToClear2.removeChild(svgToClear2.firstChild);
+			}
+			
+			
+			var svgContainer1 = d3.select("#svg1");
+			var svgContainer2 = d3.select("#svg2");
+			
+			// Gen svg paths
+			var paths1 = pathsFromSlices(allTheYSlices());
+			var paths2 = pathsFromSlices(allTheXSlices());
+			
+			for(var i = 0; i < paths1.length; i++) {
+				svgContainer1.append("path")
+						.attr("d",paths1[i])
+						.attr("stroke","blue")
+						.attr("stroke-width","0.5")
+						.attr("fill","none");
+			}
+			
+			for(var i = 0; i < paths2.length; i++) {
+				svgContainer2.append("path")
+						.attr("d",paths2[i])
+						.attr("stroke","red")
+						.attr("stroke-width","0.5")
+						.attr("fill","none");
+			}
+			
+			var svg1html = d3.select("#svg1")
+    							.node().parentNode.innerHTML;
+    		var imgsrc1 = 'data:image/svg+xml;base64,'+ btoa(svg1html);
+			d3.select("#svg-img1").attr("src",imgsrc1);
+			
+			var svg2html = d3.select("#svg2")
+    							.node().parentNode.innerHTML;
+    		var imgsrc2 = 'data:image/svg+xml;base64,'+ btoa(svg2html);
+			d3.select("#svg-img2").attr("src",imgsrc2);
+		}
+		
+	</script>
+	<!-- evenutally will need to save the svg in an img tag:
+		 http://techslides.com/save-svg-as-an-image -->
+</head>
+
+<body onload="loadMeUp();">
+<h1>3D Function Slice Generator</h1>
+<div id="inputs">
+	<table>
+		<tr><td>Function f(x, y):</td>
+			<td><input type="text" id="z_function" value="x^2 + y^3" /></td>
+		</tr>
+		<tr><td>Width:</td>
+			<td><input type="text" id="width" value="150" /></td>
+		</tr>
+		<tr><td>Number of Slices:</td>
+			<td><input type="text" id="num_slices" value="10" /></td>
+		</tr>
+		<tr>
+			<td>Material Thickness:</td>
+			<td><input type="text" id="thickness" value="1" /></td>
+		</tr>
+		<tr><td colspan=2><button type="button" onclick="genSVGs();">Generate SVGs</button></td></tr>
+	</table>
+	<br />
+</div>
+
+<img id="svg-img1"></img>
+<img id="svg-img2"></img>
+<div id="svg-container1"></div>
+<div id="svg-container2"></div>
+
+<!-- <path id="test" d="" stroke="blue" stroke-width="2" fill="none"></script> -->
+<!-- <path id="test" d="M1,5L20,20L40,10L60,40L80,5L100,60" stroke="blue" stroke-width="2" fill="none" /> -->
+</body>
+
+</html>
+
